@@ -1,0 +1,499 @@
+#  Ejercicio 1 "Caja del Kiosco"
+# 1-Nombre del cliente
+nombre = input("Cliente: ")
+while not nombre.isalpha():          
+    print("Error: solo se permiten letras y no puede estar vacío.")
+    nombre = input("Cliente: ")
+ 
+#2-Cantidad de productos
+cantidad = input("Cantidad de productos: ")
+while not cantidad.isdigit() or int(cantidad) == 0:
+    if not cantidad.isdigit():
+        print("Error: ingrese un número entero positivo.")
+    else:
+        print("Error: la cantidad debe ser mayor a 0.")
+    cantidad = input("Cantidad de productos: ")
+cantidad = int(cantidad)
+  
+total_sin_descuento = 0
+total_con_descuento = 0
+ 
+for i in range(1, cantidad + 1):
+ 
+    #Precio del producto
+    precio = input(f"Producto {i} - Precio: ")
+    while not precio.isdigit():
+        print("Error: ingrese un precio válido (número entero positivo).")
+        precio = input(f"Producto {i} - Precio: ")
+    precio = int(precio)
+ 
+    #Tiene descuento?
+    descuento = input("Descuento (S/N): ")
+    while descuento.lower() not in ("s", "n"):
+        print("Error: ingrese S o N.")
+        descuento = input("Descuento (S/N): ")
+ 
+    
+    total_sin_descuento += precio
+ 
+    if descuento.lower() == "s":
+        precio_final = precio * 0.90  
+    else:
+        precio_final = precio
+ 
+    total_con_descuento += precio_final
+ 
+#3-Resultados finales 
+ahorro  = total_sin_descuento - total_con_descuento
+promedio = float(total_con_descuento) / cantidad
+ 
+print(f"\nTotal sin descuentos: ${total_sin_descuento}")
+print(f"Total con descuentos: ${total_con_descuento:.2f}")
+print(f"Ahorro: ${ahorro:.2f}")
+print(f"Promedio por producto: ${promedio:.2f}")
+
+
+
+
+
+
+
+#Ejercicio-2"Acceso al Campus y Menú Seguro"
+
+#1-Credenciales
+USUARIO_CORRECTO = "alumno"
+CLAVE_CORRECTA   = "python123"
+
+#2-Login con máximo 3 intentos
+intentos = 0
+acceso   = False
+
+while intentos < 3 and not acceso:
+    intentos += 1
+    print(f"\nIntento {intentos}/3")
+    usuario = input("Usuario: ")
+    clave   = input("Clave: ")
+
+    if usuario == USUARIO_CORRECTO and clave == CLAVE_CORRECTA:
+        acceso = True
+    else:
+        print("Error: credenciales inválidas.")
+
+
+if not acceso:
+    print("\nCuenta bloqueada.")
+
+else:
+    print("\nAcceso concedido.")
+    clave_actual = CLAVE_CORRECTA   # se puede actualizar con la opción 2
+
+    en_menu = True
+    while en_menu:
+
+        print("\n1) Estado  2) Cambiar clave  3) Mensaje  4) Salir")
+
+        #Validación del menú 
+        opcion = input("Opción: ")
+        while not opcion.isdigit() or int(opcion) < 1 or int(opcion) > 4:
+            if not opcion.isdigit():
+                print("Error: ingrese un número válido.")
+            else:
+                print("Error: opción fuera de rango.")
+            opcion = input("Opción: ")
+
+        opcion = int(opcion)
+
+        #Opción 1: Estado de inscripción 
+        if opcion == 1:
+            print("Estado: Inscripto")
+
+        #Opción 2: Cambiar clave 
+        elif opcion == 2:
+
+            # Validar longitud mínima (6 caracteres)
+            nueva = input("Nueva clave: ")
+            while len(nueva) < 6:
+                print("Error: mínimo 6 caracteres.")
+                nueva = input("Nueva clave: ")
+
+            # Validar que coincida con la confirmación
+            confirmar = input("Confirmar clave: ")
+            while confirmar != nueva:
+                print("Error: las claves no coinciden.")
+                confirmar = input("Confirmar clave: ")
+
+            clave_actual = nueva
+            print(" Clave actualizada con éxito.")
+
+        #Opción 3: Mensaje motivacional
+        elif opcion == 3:
+            print(" La vida no es buena ni mala, es simplemente maravillosa.")
+
+        #Opción 4: Salir 
+        elif opcion == 4:
+            print("Sesión cerrada.")
+            en_menu = False
+
+
+
+#Ejercicio 3"Agenda de Turnos con Nombres (sin listas)"
+#Nombre del operador 
+nombre_operador = input("Nombre del operador: ")
+while not nombre_operador.isalpha():
+    print("Error: solo se permiten letras.")
+    nombre_operador = input("Nombre del operador: ")
+
+print(f"\nBienvenido, {nombre_operador}.")
+
+# Variables de turnos (sin listas) 
+# Lunes: 4 cupos
+lunes1 = ""
+lunes2 = ""
+lunes3 = ""
+lunes4 = ""
+
+#Martes: 3 cupos
+
+martes1 = ""
+martes2 = ""
+martes3 = ""
+
+
+
+#FUNCIONES AUXILIARES 
+
+def pedir_dia():
+    """Pide y valida la elección de día (1=Lunes, 2=Martes)."""
+    dia = input("Día (1=Lunes, 2=Martes): ")
+    while not dia.isdigit() or int(dia) < 1 or int(dia) > 2:
+        print("Error: ingrese 1 o 2.")
+        dia = input("Día (1=Lunes, 2=Martes): ")
+    return int(dia)
+
+
+def pedir_nombre_paciente():
+    """Pide y valida el nombre del paciente (solo letras)."""
+    paciente = input("Nombre del paciente: ")
+    while not paciente.isalpha():
+        print("Error: solo se permiten letras.")
+        paciente = input("Nombre del paciente: ")
+    return paciente
+
+
+
+#  MENÚ PRINCIPAL
+
+activo = True
+
+while activo:
+
+    print("")
+    print(" 1) Reservar turno")
+    print(" 2) Cancelar turno ")
+    print(" 3) Ver agenda del día")
+    print("  4) Ver resumen general")
+    print("  5) Cerrar sistema")
+  
+
+    opcion = input("Opción: ")
+    while not opcion.isdigit() or int(opcion) < 1 or int(opcion) > 5:
+        print("Error: ingrese una opción entre 1 y 5.")
+        opcion = input("Opción: ")
+    opcion = int(opcion)
+
+    
+    #  OPCIÓN 1—RESERVAR TURNO
+    if opcion == 1:
+        dia     = pedir_dia()
+        paciente = pedir_nombre_paciente()
+
+        if dia == 1:   # ── Lunes ──
+            # Verificar duplicado
+            if paciente == lunes1 or paciente == lunes2 or paciente == lunes3 or paciente == lunes4:
+                print(f"Error: {paciente} ya tiene turno el Lunes.")
+           
+            elif lunes1 == "":
+                lunes1 = paciente
+                print(f"Turno reservado: {paciente} → Lunes, turno 1.")
+            elif lunes2 == "":
+                lunes2 = paciente
+                print(f"Turno reservado: {paciente} → Lunes, turno 2.")
+            elif lunes3 == "":
+                lunes3 = paciente
+                print(f"Turno reservado: {paciente} → Lunes, turno 3.")
+            elif lunes4 == "":
+                lunes4 = paciente
+                print(f"Turno reservado: {paciente} → Lunes, turno 4.")
+            else:
+                print("No hay turnos disponibles el Lunes.")
+
+        else:           # ── Martes ──
+            if paciente == martes1 or paciente == martes2 or paciente == martes3:
+                print(f"Error: {paciente} ya tiene turno el Martes.")
+            elif martes1 == "":
+                martes1 = paciente
+                print(f"Turno reservado: {paciente} → Martes, turno 1.")
+            elif martes2 == "":
+                martes2 = paciente
+                print(f"Turno reservado: {paciente} → Martes, turno 2.")
+            elif martes3 == "":
+                martes3 = paciente
+                print(f"Turno reservado: {paciente} → Martes, turno 3.")
+            else:
+                print("No hay turnos disponibles el Martes.")
+
+    
+#OPCIÓN 2-CANCELAR TURNO
+
+    elif opcion == 2:
+        dia      = pedir_dia()
+        paciente = pedir_nombre_paciente()
+        cancelado = False
+
+        if dia == 1:   
+            if lunes1 == paciente:
+                lunes1 = ""
+                cancelado = True
+            elif lunes2 == paciente:
+                lunes2 = ""
+                cancelado = True
+            elif lunes3 == paciente:
+                lunes3 = ""
+                cancelado = True
+            elif lunes4 == paciente:
+                lunes4 = ""
+                cancelado = True
+
+        else:           
+            if martes1 == paciente:
+                martes1 = ""
+                cancelado = True
+            elif martes2 == paciente:
+                martes2 = ""
+                cancelado = True
+            elif martes3 == paciente:
+                martes3 = ""
+                cancelado = True
+
+        if cancelado:
+            print(f"Turno de {paciente} cancelado.")
+        else:
+            print(f"No se encontró a {paciente} en ese día.")
+
+    
+    #OPCIÓN 3-VER AGENDA DEL DÍA
+    
+    elif opcion == 3:
+        dia = pedir_dia()
+
+        if dia == 1:
+            print("\n--- Agenda del Lunes ---")
+            print(f"  Turno 1: {lunes1  if lunes1  != '' else '(libre)'}")
+            print(f"  Turno 2: {lunes2  if lunes2  != '' else '(libre)'}")
+            print(f"  Turno 3: {lunes3  if lunes3  != '' else '(libre)'}")
+            print(f"  Turno 4: {lunes4  if lunes4  != '' else '(libre)'}")
+        else:
+            print("\n--- Agenda del Martes ---")
+            print(f"  Turno 1: {martes1 if martes1 != '' else '(libre)'}")
+            print(f"  Turno 2: {martes2 if martes2 != '' else '(libre)'}")
+            print(f"  Turno 3: {martes3 if martes3 != '' else '(libre)'}")
+
+
+    # OPCIÓN 4—RESUMEN GENERAL
+
+    elif opcion == 4:
+        # Contar ocupados Lunes
+        lunes_ocupados = 0
+        if lunes1  != "": lunes_ocupados += 1
+        if lunes2  != "": lunes_ocupados += 1
+        if lunes3  != "": lunes_ocupados += 1
+        if lunes4  != "": lunes_ocupados += 1
+        lunes_libres = 4 - lunes_ocupados
+
+        # Contar ocupados Martes
+        martes_ocupados = 0
+        if martes1 != "": martes_ocupados += 1
+        if martes2 != "": martes_ocupados += 1
+        if martes3 != "": martes_ocupados += 1
+        martes_libres = 3 - martes_ocupados
+
+        print("Resumen General")
+        print(f"  Lunes  → Ocupados: {lunes_ocupados}  | Disponibles: {lunes_libres}")
+        print(f"  Martes → Ocupados: {martes_ocupados}  | Disponibles: {martes_libres}")
+
+        if lunes_ocupados > martes_ocupados:
+            print("Día con más turnos: Lunes")
+        elif martes_ocupados > lunes_ocupados:
+            print("Día con más turnos: Martes")
+        else:
+            print("Empate en turnos ocupados.")
+
+    # OPCIÓN-5CERRAR SISTEMA
+    elif opcion == 5:
+        print("\nSistema cerrado. ¡Hasta luego!")
+        activo = False
+
+
+
+
+
+
+#  Ejercicio 4 — "Escape Room: La Bóveda"
+
+#  Variables iniciales 
+energia=100
+tiempo=12
+cerraduras_abiertas=0
+alarma=False
+codigo_parcial=""
+forzar_seguidas=0      
+
+# Nombre del agente
+print("=" * 50)
+print("       ESCAPE ROOM — LA BÓVEDA SECRETA")
+print("=" * 50)
+
+nombre = input("\nNombre del agente: ")
+while not nombre.isalpha():
+    print("Error: solo se permiten letras.")
+    nombre = input("Nombre del agente: ")
+
+print(f"\n¡Bienvenido, agente {nombre}!")
+print("Objetivo: abrí las 3 cerraduras antes de quedarte")
+print("          sin energía o sin tiempo.\n")
+
+
+# CICLO PRINCIPAL DEL JUEGO
+ 
+juego_activo = True
+
+while juego_activo and energia > 0 and tiempo > 0 and cerraduras_abiertas < 3 and not alarma:
+
+    #  Verificar bloqueo por alarma ANTES de cada turno 
+    if alarma and tiempo <= 3 and cerraduras_abiertas < 3:
+        print("\n🚨 SISTEMA BLOQUEADO — Alarma activa con tiempo crítico.")
+        juego_activo = False
+        break
+
+    # Mostrar estado actual
+    print("\n" + "─" * 50)
+    print(f"  Agente  : {nombre}")
+    print(f"  Energía : {energia}   | Tiempo : {tiempo}")
+    print(f"  Cerraduras abiertas : {cerraduras_abiertas}/3")
+    print(f"  Código parcial      : '{codigo_parcial}' (len={len(codigo_parcial)})")
+    print(f"  Alarma  : {'🔴 ON' if alarma else '🟢 OFF'}")
+    print("─" * 50)
+    print("  1) Forzar cerradura  (-20 energía, -2 tiempo)")
+    print("  2) Hackear panel     (-10 energía, -3 tiempo)")
+    print("  3) Descansar         (+15 energía,  -1 tiempo)")
+    print("─" * 50)
+
+    # Validar opción del menú 
+    opcion = input("Acción: ")
+    while not opcion.isdigit() or int(opcion) < 1 or int(opcion) > 3:
+        print("Error: ingresá 1, 2 o 3.")
+        opcion = input("Acción: ")
+    opcion = int(opcion)
+
+    
+    # OPCIÓN 1 —FORZAR CERRADURA
+
+    if opcion == 1:
+        energia -= 20
+        tiempo  -= 2
+        forzar_seguidas += 1
+
+        print(f"\nForzando cerradura... (energía: {energia}, tiempo: {tiempo})")
+
+        #Regla anti-spam: 3 veces seguidas
+        if forzar_seguidas >= 3:
+            alarma = True
+            print("¡La cerradura se trabó! Alarma activada automáticamente.")
+            print("No se abrió ninguna cerradura.")
+
+        #  Riesgo de alarma si energía < 40 
+        elif energia < 40:
+            print("Energía baja — riesgo de alarma.")
+            print("Ingresá un número del 1 al 3:")
+            num = input("Número:")
+            while not num.isdigit() or int(num) < 1 or int(num) > 3:
+                print(" Error: ingresá 1, 2 o 3.")
+                num = input("Número: ")
+            num = int(num)
+
+            if num == 3:
+                alarma = True
+                print("Número 3 elegido. Alarma activada.")
+            else:
+                cerraduras_abiertas += 1
+                print(f"Cerradura abierta. Total: {cerraduras_abiertas}/3")
+
+        #  En riesgo: abre cerradura normalmente 
+        else:
+            cerraduras_abiertas += 1
+            print(f"Cerradura abierta. Total: {cerraduras_abiertas}/3")
+
+    
+    #OPCIÓN 2—HACKEAR PANEL
+    elif opcion == 2:
+        energia-= 10
+        tiempo-= 3
+        forzar_seguidas = 0    # corta la racha anti-spam
+
+        print("\n💻 Hackeando panel...")
+
+        for paso in range(1, 5):
+            codigo_parcial += "A"
+            print(f"   Paso {paso}/4 → Código parcial: '{codigo_parcial}'")
+
+        print(f"   Hackeo completado. Código acumulado: '{codigo_parcial}' (len={len(codigo_parcial)})")
+
+        # ── Abrir cerradura si código >= 8 caracteres ─────
+        if len(codigo_parcial) >= 8 and cerraduras_abiertas < 3:
+            cerraduras_abiertas += 1
+            print(f"Código suficiente. Cerradura abierta automáticamente. Total: {cerraduras_abiertas}/3")
+
+    
+    #OPCIÓN 3 —DESCANSAR
+    
+    elif opcion == 3:
+        forzar_seguidas = 0    # corta la racha anti-spam
+        tiempo -= 1
+
+        if alarma:
+            energia -= 10
+            print(f"\nDescansás, pero la alarma drena energía extra. -10 energía. (energía: {energia})")
+        else:
+            energia = min(100, energia + 15)
+            print(f" Descansaste. +15 energía. (energía: {energia})")
+
+    #Verificar bloqueo por alarma AL FINAL del turno
+    if alarma and tiempo <= 3 and cerraduras_abiertas < 3:
+        print("\n SISTEMA BLOQUEADO — Alarma activa y tiempo crítico (≤3).")
+        juego_activo = False
+
+
+#RESULTADO FINAL
+
+print("\n" + "=" * 50)
+print("RESULTADO FINAL")
+print("=" * 50)
+print(f"Cerraduras abiertas:{cerraduras_abiertas}/3")
+print(f"Energía restante:{energia}")
+print(f"Tiempo restante:{tiempo}")
+print(f"Alarma: {'ON' if alarma else 'OFF'}")
+print("─" * 50)
+
+if cerraduras_abiertas == 3:
+    print(f" ¡VICTORIA! Agente {nombre} abrió la bóveda.")
+elif not juego_activo and alarma:
+    print(f"DERROTA — Sistema bloqueado por alarma.")
+elif energia <= 0:
+    print(f" DERROTA — Sin energía. Misión fallida.")
+elif tiempo <= 0:
+    print(f" DERROTA — Tiempo agotado. Misión fallida.")
+
+print("=" * 50)
+
+
+
